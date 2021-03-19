@@ -22,8 +22,7 @@
           <b-button
             size="sm"
             variant="danger"
-            :disabled="dimension.isDeleting || dimension.questions.length > 0"
-            @click="deleteDimension(dimension)"
+            @click="onClickDeleteDimension(dimension)"
           >
             <b-spinner small type="grow" v-if="dimension.isDeleting" />
             <span class="p-0" v-else> Excluir </span>
@@ -35,6 +34,17 @@
 </template>
 <script>
 import "./list.styles.css";
+
+const MODAL_DEFAULT_CONFIG = {
+  size: "sm",
+  okTitle: "Sim",
+  centered: true,
+  buttonSize: "sm",
+  cancelTitle: "Não",
+  footerClass: "p-2 border-top-0",
+  headerClass: "p-2 border-bottom-0",
+};
+
 export default {
   name: "List",
   data() {
@@ -56,19 +66,51 @@ export default {
         });
       });
     },
-    deleteDimension(dimension) {
-      if (!confirm("Você tem certeza que deseja deletar essa dimensão ?")) {
-        return;
+    onClickDeleteDimension(dimension) {
+      if (dimension.questions.length) {
+        this.showDeleteNotAllowedMessage(dimension);
+      } else {
+        this.showDeleteWizard(dimension);
       }
+    },
+    showDeleteNotAllowedMessage(dimension) {
+      let text =
+        "Não é possível deletar essa dimensão pois as seguintes questões estão vinculadas a ela: ";
 
-      dimension.isDeleting = true;
-      this.$http.delete(`dimension/${dimension.id}`).then(() => {
-        dimension.isDeleting = false;
-        this.dimensions = this.dimensions.filter((q) => q !== dimension);
-        this.showToast({
-          message: `A dimensão "${dimension.title}" foi removida`,
-        });
+      const questions = dimension.questions
+        .map((i) => `"${i.content}"`)
+        .join(", ");
+
+      this.$bvModal.msgBoxOk(text + questions, {
+        ...MODAL_DEFAULT_CONFIG,
+        size: "md",
       });
+    },
+    showDeleteWizard(dimension) {
+      this.$bvModal
+        .msgBoxConfirm(
+          "Você tem certeza que deseja deletar essa dimensão ?",
+          MODAL_DEFAULT_CONFIG
+        )
+        .then(async (resp) => {
+          if (resp) {
+            dimension.isDeleting = true;
+            await this.deleteDimension(dimension.id);
+            dimension.isDeleting = false;
+
+            this.removeDimensionFromList(dimension);
+
+            this.showToast({
+              message: `A dimensão "${dimension.title}" foi removida`,
+            });
+          }
+        });
+    },
+    deleteDimension(id) {
+      return this.$http.delete(`dimension/${id}`);
+    },
+    removeDimensionFromList(dimension) {
+      this.dimensions = this.dimensions.filter((q) => q !== dimension);
     },
     showToast({ title = "Sucesso !", message, variant = "success" }) {
       this.$bvToast.toast(message, {
