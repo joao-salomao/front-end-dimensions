@@ -32,7 +32,14 @@
           <div class="question__actions">
             <b-button-group size="sm">
               <b-button variant="primary">Editar</b-button>
-              <b-button variant="danger">Excluir</b-button>
+              <b-button
+                variant="danger"
+                :disabled="question.isDeleting"
+                @click="deleteQuestion(question)"
+              >
+                <b-spinner small type="grow" v-if="question.isDeleting" />
+                <span class="p-0" v-else> Excluir </span>
+              </b-button>
             </b-button-group>
           </div>
         </div>
@@ -43,11 +50,24 @@
 <script>
 import "./list.styles.css";
 export default {
-  name: "Home",
+  name: "List",
+  data() {
+    return {
+      questions: [],
+    };
+  },
+  mounted() {
+    this.getQuestions();
+  },
   methods: {
     getQuestions() {
       this.$http.get("/question").then((resp) => {
-        this.questions = resp.data;
+        this.questions = resp.data.map((q) => {
+          return {
+            ...q,
+            isDeleting: false,
+          };
+        });
       });
     },
     updateQuestionActiveStatus(question, active) {
@@ -57,26 +77,32 @@ export default {
         })
         .then(() => {
           question.active = active;
-          const message =
-            "Questão " + (active ? "ativada" : "desativada") + "!";
-          this.showToast("Questão atualizada", message);
+          this.showToast({
+            message: "Questão " + (active ? "ativada" : "desativada") + ".",
+          });
         });
     },
-    showToast(title, message, variant = "secondary") {
+    deleteQuestion(question) {
+      if (!confirm("Você tem certeza que deseja deletar essa questão ?")) {
+        return;
+      }
+
+      question.isDeleting = true;
+      this.$http.delete(`question/${question.id}`).then(() => {
+        question.isDeleting = false;
+        this.questions = this.questions.filter((q) => q !== question);
+        this.showToast({
+          message: `A questão "${question.content}" foi removida`,
+        });
+      });
+    },
+    showToast({ title = "Sucesso !", message, variant = "success" }) {
       this.$bvToast.toast(message, {
         title,
         variant,
         solid: true,
       });
     },
-  },
-  mounted() {
-    this.getQuestions();
-  },
-  data() {
-    return {
-      questions: [],
-    };
   },
 };
 </script>
