@@ -77,14 +77,11 @@ export default {
   data() {
     return {
       questions: [],
+      dimensions: [],
       selectedDimensions: [],
     };
   },
   computed: {
-    dimensions() {
-      const dimensions = this.questions.map((q) => q.dimension);
-      return uniqBy(dimensions, "id");
-    },
     dimensionOptions() {
       return this.dimensions.map((item) => {
         return {
@@ -94,20 +91,35 @@ export default {
       });
     },
   },
+  watch: {
+    selectedDimensions() {
+      const ids = this.selectedDimensions.map((d) => d.value).join(",");
+      this.getQuestions(ids);
+    },
+  },
   mounted() {
-    this.getQuestions();
-    this.getDimensions();
+    this.getQuestions().then(this.setDimensions);
   },
   methods: {
-    getQuestions() {
-      this.$http.get("/question").then((resp) => {
-        this.questions = resp.data.map((q) => {
-          return {
-            ...q,
-            isDeleting: false,
-          };
+    getQuestions(dimensions = null) {
+      return this.$http
+        .get("/question", {
+          params: {
+            dimensions,
+          },
+        })
+        .then((resp) => {
+          this.questions = resp.data.map((q) => {
+            return {
+              ...q,
+              isDeleting: false,
+            };
+          });
         });
-      });
+    },
+    setDimensions() {
+      const dimensions = this.questions.map((q) => q.dimension);
+      this.dimensions = uniqBy(dimensions, "id");
     },
     updateQuestionActiveStatus(question, active) {
       this.$http
