@@ -14,6 +14,22 @@
       </div>
     </div>
     <div class="body">
+      <div class="mb-2" style="max-width: 50%">
+        <label> Filtro </label>
+        <multiselect
+          multiple
+          label="text"
+          track-by="value"
+          :options="dimensionOptions"
+          v-model="selectedDimensions"
+          selectedLabel="Selecionado"
+          deselectLabel="Clique para remover"
+          selectLabel="Clique para selecionar"
+          placeholder="Selecione um ou mais dimensões para filtrar"
+        >
+          <template slot="noOptions"> Nenhuma dimensão disponível </template>
+        </multiselect>
+      </div>
       <div class="question" :key="i" v-for="(question, i) in questions">
         <div class="question__status">
           <b-icon
@@ -55,15 +71,32 @@
 </template>
 <script>
 import "./list.styles.css";
+import { uniqBy } from "lodash";
 export default {
   name: "List",
   data() {
     return {
       questions: [],
+      selectedDimensions: [],
     };
+  },
+  computed: {
+    dimensions() {
+      const dimensions = this.questions.map((q) => q.dimension);
+      return uniqBy(dimensions, "id");
+    },
+    dimensionOptions() {
+      return this.dimensions.map((item) => {
+        return {
+          value: item.id,
+          text: item.title,
+        };
+      });
+    },
   },
   mounted() {
     this.getQuestions();
+    this.getDimensions();
   },
   methods: {
     getQuestions() {
