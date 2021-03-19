@@ -10,6 +10,12 @@
   background-color: rgba(128, 128, 128, 0.4);
 }
 
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
 .btn,
 .btn-sm,
 .btn-group-sm > .btn {
