@@ -40,37 +40,19 @@
 import "./list.styles.css";
 export default {
   name: "Home",
+  methods: {
+    getQuestions() {
+      this.$http.get("/question").then((resp) => {
+        this.questions = resp.data;
+      });
+    },
+  },
+  mounted() {
+    this.getQuestions();
+  },
   data() {
     return {
-      questions: [
-        {
-          content:
-            "Quantos dias na semana você prefere trabalhar de home-office",
-          status: true,
-          dimension: {
-            id: 1,
-            title: "Estrutura",
-          },
-        },
-        {
-          content:
-            "Quantos dias na semana você prefere trabalhar de home-office",
-          status: true,
-          dimension: {
-            id: 1,
-            title: "Estrutura",
-          },
-        },
-        {
-          content:
-            "Quantos dias na semana você prefere trabalhar de home-office",
-          status: false,
-          dimension: {
-            id: 1,
-            title: "Estrutura",
-          },
-        },
-      ],
+      questions: [],
     };
   },
 };
