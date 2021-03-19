@@ -11,12 +11,16 @@
       <div class="question" :key="i" v-for="(question, i) in questions">
         <div class="question__status">
           <b-icon
-            v-if="question.status"
+            v-if="question.active"
             icon="check-circle-fill"
             variant="success"
-            @click="question.status = false"
+            @click="updateQuestionActiveStatus(question, false)"
           />
-          <b-icon v-else icon="circle" @click="question.status = true" />
+          <b-icon
+            v-else
+            icon="circle"
+            @click="updateQuestionActiveStatus(question, true)"
+          />
         </div>
         <div class="question__body">
           <div class="question__title">
@@ -45,6 +49,15 @@ export default {
       this.$http.get("/question").then((resp) => {
         this.questions = resp.data;
       });
+    },
+    updateQuestionActiveStatus(question, active) {
+      this.$http
+        .put(`/question/${question.id}`, {
+          active,
+        })
+        .then(() => {
+          question.active = active;
+        });
     },
   },
   mounted() {
