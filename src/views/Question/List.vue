@@ -3,7 +3,13 @@
     <div class="header">
       <h2 class="text-muted">Perguntas</h2>
       <div class="float-right">
-        <b-button class="mr-3" size="sm" variant="light">Dimensões</b-button>
+        <b-button
+          class="mr-3"
+          size="sm"
+          variant="light"
+          @click="$router.push('/dimension')"
+          >Dimensões</b-button
+        >
         <b-button size="sm" variant="primary">+ Criar pergunta</b-button>
       </div>
     </div>
