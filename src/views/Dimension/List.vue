@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="header">
-      <h2 class="text-muted">Perguntas</h2>
+      <h2 class="text-muted">Dimensões</h2>
       <div class="float-right">
         <b-button
           class="mr-3"
@@ -13,13 +13,8 @@
         <b-button size="sm" variant="primary">+ Criar dimensão</b-button>
       </div>
     </div>
-    <div class="w-100 p-3" style="background-color: white;">
-      <div
-        class="d-flex justify-content-between w-100 mb-2 p-2"
-        :key="i"
-        style="border: 5px solid rgba(128, 128, 128, 0.2)"
-        v-for="(dimension, i) in dimensions"
-      >
+    <div class="body">
+      <div class="dimension" :key="i" v-for="(dimension, i) in dimensions">
         <div>
           {{ dimension.title }}
         </div>
@@ -27,7 +22,7 @@
           <b-button
             size="sm"
             variant="danger"
-            :disabled="dimension.isDeleting"
+            :disabled="dimension.isDeleting || dimension.questions.length > 0"
             @click="deleteDimension(dimension)"
           >
             <b-spinner small type="grow" v-if="dimension.isDeleting" />
@@ -71,7 +66,7 @@ export default {
         dimension.isDeleting = false;
         this.dimensions = this.dimensions.filter((q) => q !== dimension);
         this.showToast({
-          message: `A questão "${dimension.content}" foi removida`,
+          message: `A dimensão "${dimension.title}" foi removida`,
         });
       });
     },
