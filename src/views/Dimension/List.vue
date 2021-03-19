@@ -23,23 +23,19 @@
         <div>
           {{ dimension.title }}
         </div>
-        <div>
-          <b-button
-            size="sm"
-            variant="danger"
-            @click="onClickDeleteDimension(dimension)"
-          >
+        <b-button-group size="sm">
+          <b-button variant="primary">Editar</b-button>
+          <b-button variant="danger" @click="onClickDeleteDimension(dimension)">
             <b-spinner small type="grow" v-if="dimension.isDeleting" />
             <span class="p-0" v-else> Excluir </span>
           </b-button>
-        </div>
+        </b-button-group>
       </div>
     </div>
   </div>
 </template>
+<style scoped src="./list.styles.css"></style>
 <script>
-import "./list.styles.css";
-
 const MODAL_DEFAULT_CONFIG = {
   size: "sm",
   okTitle: "Sim",

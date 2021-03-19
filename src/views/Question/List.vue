@@ -71,8 +71,8 @@
     </div>
   </div>
 </template>
+<style scoped src="./list.styles.css"></style>
 <script>
-import "./list.styles.css";
 import { uniqBy } from "lodash";
 export default {
   name: "List",
