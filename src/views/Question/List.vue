@@ -48,21 +48,23 @@
           <div class="question__title">
             {{ question.dimension.title }}
           </div>
-          <div class="question__content">
-            {{ question.content }}
-          </div>
-          <div class="question__actions">
-            <b-button-group size="sm">
-              <b-button variant="primary">Editar</b-button>
-              <b-button
-                variant="danger"
-                :disabled="question.isDeleting"
-                @click="deleteQuestion(question)"
-              >
-                <b-spinner small type="grow" v-if="question.isDeleting" />
-                <span class="p-0" v-else> Excluir </span>
-              </b-button>
-            </b-button-group>
+          <div class="d-flex w-100 justify-content-between">
+            <div class="question__content">
+              {{ question.content }}
+            </div>
+            <div class="question__actions">
+              <b-button-group size="sm">
+                <b-button variant="primary">Editar</b-button>
+                <b-button
+                  variant="danger"
+                  :disabled="question.isDeleting"
+                  @click="deleteQuestion(question)"
+                >
+                  <b-spinner small type="grow" v-if="question.isDeleting" />
+                  <span class="p-0" v-else> Excluir </span>
+                </b-button>
+              </b-button-group>
+            </div>
           </div>
         </div>
       </div>

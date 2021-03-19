@@ -22,7 +22,7 @@
 }
 
 .question__body * {
-    padding        : 10px;
+    padding        : 2px;
     display        : flex;
     align-items    : center;
     justify-content: center;
@@ -39,16 +39,15 @@
 }
 
 .question__title {
-    min-width   : 100px;
+    min-width   : 120px;
     border-right: 5px solid rgba(128, 128, 128, 0.2);
 }
 
 .question__content {
-    min-width      : 70%;
+    display        : flex;
     justify-content: flex-start;
 }
 
 .question__actions {
-    width          : 100%;
     justify-content: flex-end;
 }
