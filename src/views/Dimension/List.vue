@@ -10,7 +10,12 @@
           @click="$router.push('/question')"
           >Perguntas</b-button
         >
-        <b-button size="sm" variant="primary">+ Criar dimensão</b-button>
+        <b-button
+          size="sm"
+          variant="primary"
+          @click="$router.push('/dimension/new')"
+          >+ Criar dimensão</b-button
+        >
       </div>
     </div>
     <div class="body">
