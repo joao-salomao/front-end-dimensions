@@ -18,7 +18,7 @@
 .question__body {
     display: flex;
     width  : 100%;
-    border : 5px solid rgba(128, 128, 128, 0.9);
+    border : 5px solid rgba(128, 128, 128, 0.2);
 }
 
 .question__body * {
@@ -40,7 +40,7 @@
 
 .question__title {
     min-width   : 100px;
-    border-right: 5px solid rgba(128, 128, 128, 0.9);
+    border-right: 5px solid rgba(128, 128, 128, 0.2);
 }
 
 .question__content {
