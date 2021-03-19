@@ -57,7 +57,17 @@ export default {
         })
         .then(() => {
           question.active = active;
+          const message =
+            "Questão " + (active ? "ativada" : "desativada") + "!";
+          this.showToast("Questão atualizada", message);
         });
+    },
+    showToast(title, message, variant = "secondary") {
+      this.$bvToast.toast(message, {
+        title,
+        variant,
+        solid: true,
+      });
     },
   },
   mounted() {
