@@ -29,7 +29,11 @@
             @click="$router.push('/dimension/edit/' + dimension.id)"
             >Editar</b-button
           >
-          <b-button variant="danger" @click="onClickDeleteDimension(dimension)">
+          <b-button
+            variant="danger"
+            style="min-width: 57px; min-height: 31px"
+            @click="onClickDeleteDimension(dimension)"
+          >
             <b-spinner small type="grow" v-if="dimension.isDeleting" />
             <span class="p-0" v-else> Excluir </span>
           </b-button>

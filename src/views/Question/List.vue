@@ -67,6 +67,7 @@
                 <b-button
                   variant="danger"
                   :disabled="question.isDeleting"
+                  style="min-width: 57px; min-height: 31px"
                   @click="deleteQuestion(question)"
                 >
                   <b-spinner small type="grow" v-if="question.isDeleting" />
