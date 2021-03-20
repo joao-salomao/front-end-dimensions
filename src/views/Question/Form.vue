@@ -18,7 +18,13 @@
       :selected.sync="dimension"
     />
     <div>
-      <b-button size="sm" type="submit" class="mr-2" variant="success">
+      <b-button
+        size="sm"
+        type="submit"
+        class="mr-2"
+        variant="success"
+        style="min-width: 55px"
+      >
         <b-spinner small type="grow" v-if="isSubmitting" />
         <span v-else> Salvar </span>
       </b-button>

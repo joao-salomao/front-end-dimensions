@@ -7,7 +7,13 @@
     <b-form-group label="Nome da dimensão">
       <b-form-input size="sm" v-model="title" required trim />
     </b-form-group>
-    <b-button size="sm" type="submit" class="mr-2" variant="success">
+    <b-button
+      size="sm"
+      type="submit"
+      class="mr-2"
+      variant="success"
+      style="min-width: 55px"
+    >
       <b-spinner small type="grow" v-if="isSubmitting" />
       <span v-else> Salvar </span>
     </b-button>
