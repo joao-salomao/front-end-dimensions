@@ -31,6 +31,7 @@
           >
           <b-button
             variant="danger"
+            :disabled="dimension.isDeleting"
             style="min-width: 57px; min-height: 31px"
             @click="onClickDeleteDimension(dimension)"
           >
