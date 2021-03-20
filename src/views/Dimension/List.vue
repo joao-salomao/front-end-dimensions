@@ -24,7 +24,11 @@
           {{ dimension.title }}
         </div>
         <b-button-group size="sm">
-          <b-button variant="primary">Editar</b-button>
+          <b-button
+            variant="primary"
+            @click="$router.push('/dimension/edit/' + dimension.id)"
+            >Editar</b-button
+          >
           <b-button variant="danger" @click="onClickDeleteDimension(dimension)">
             <b-spinner small type="grow" v-if="dimension.isDeleting" />
             <span class="p-0" v-else> Excluir </span>
