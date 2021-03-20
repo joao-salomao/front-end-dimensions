@@ -60,7 +60,7 @@
                   variant="danger"
                   :disabled="question.isDeleting"
                   style="min-width: 57px; min-height: 31px"
-                  @click="deleteQuestion(question)"
+                  @click="onClickDeleteQuestion(question)"
                 >
                   <b-spinner small type="grow" v-if="question.isDeleting" />
                   <span class="p-0" v-else> Excluir </span>
@@ -126,19 +126,34 @@ export default {
           });
         });
     },
-    deleteQuestion(question) {
-      if (!confirm("Você tem certeza que deseja deletar essa questão ?")) {
-        return;
-      }
-
-      question.isDeleting = true;
-      this.$http.delete(`question/${question.id}`).then(() => {
-        question.isDeleting = false;
-        this.questions = this.questions.filter((q) => q !== question);
-        this.showToast({
-          message: `A questão "${question.content}" foi removida`,
+    onClickDeleteQuestion(question) {
+      this.$bvModal
+        .msgBoxConfirm("Você tem certeza que deseja deletar essa questão ?", {
+          size: "sm",
+          okTitle: "Sim",
+          centered: true,
+          buttonSize: "sm",
+          cancelTitle: "Não",
+          footerClass: "p-2 border-top-0",
+          headerClass: "p-2 border-bottom-0",
+        })
+        .then(async (resp) => {
+          if (resp) {
+            question.isDeleting = true;
+            await this.deleteQuestion(question.id);
+            question.isDeleting = false;
+            this.removeQuestionFromList(question);
+            this.showToast({
+              message: `A questão "${question.content}" foi removida`,
+            });
+          }
         });
-      });
+    },
+    removeQuestionFromList(question) {
+      this.questions = this.questions.filter((q) => q !== question);
+    },
+    deleteQuestion(id) {
+      return this.$http.delete(`question/${id}`);
     },
     showToast({ title = "Sucesso !", message, variant = "success" }) {
       toast(this, {
