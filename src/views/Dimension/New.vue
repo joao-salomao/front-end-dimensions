@@ -1,38 +1,25 @@
 <template>
   <div class="h-100 p-3">
     <h1 class="text-muted">Criar dimensão</h1>
-    <b-form
-      @submit="onSubmit"
-      class="p-4"
-      style="background-color: white; height: 80%"
-    >
-      <b-form-group label="Nome da dimensão">
-        <b-form-input size="sm" v-model="title" required trim />
-      </b-form-group>
-      <b-button size="sm" type="submit" class="mr-2" variant="success">
-        <b-spinner small type="grow" v-if="isSubmitting" />
-        <span v-else> Salvar </span>
-      </b-button>
-      <b-button size="sm" variant="light" @click="$router.push('/dimension')"
-        >Cancelar</b-button
-      >
-    </b-form>
+    <Form :isSubmitting="isSubmitting" @submit="onSubmit" />
   </div>
 </template>
 <script>
+import Form from "./Form";
 export default {
+  components: {
+    Form,
+  },
   data() {
     return {
-      title: null,
       isSubmitting: false,
     };
   },
   methods: {
-    onSubmit(event) {
-      event.preventDefault();
+    onSubmit(data) {
       this.isSubmitting = true;
       this.$http
-        .post("/dimension", { title: this.title })
+        .post("/dimension", data)
         .then(() => {
           this.$bvToast.toast("Dimensão criada.", {
             title: "Sucesso!",
