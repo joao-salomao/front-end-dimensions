@@ -35,6 +35,10 @@ export default {
     Dimensions,
   },
   props: {
+    question: {
+      type: Object,
+      default: null,
+    },
     isSubmitting: {
       type: Boolean,
       default: false,
@@ -45,6 +49,12 @@ export default {
       content: null,
       dimension: null,
     };
+  },
+  mounted() {
+    if (this.question) {
+      this.content = this.question.content;
+      this.dimension = this.question.dimension;
+    }
   },
   methods: {
     onSubmit() {
