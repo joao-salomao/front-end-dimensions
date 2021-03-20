@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 p-3">
+  <div class="h-100">
     <h2 class="text-muted">Editar questão</h2>
     <div class="text-center" v-if="isLoading">
       <b-spinner type="grow" />

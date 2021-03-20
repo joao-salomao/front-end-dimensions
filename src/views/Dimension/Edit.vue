@@ -1,6 +1,6 @@
 <template>
   <div class="h-100">
-    <h1 class="text-muted">Editar dimensão</h1>
+    <h2 class="text-muted">Editar dimensão</h2>
     <div class="text-center" v-if="isLoading">
       <b-spinner type="grow" />
     </div>

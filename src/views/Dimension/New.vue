@@ -1,6 +1,6 @@
 <template>
-  <div class="h-100 p-3">
-    <h1 class="text-muted">Criar dimensão</h1>
+  <div class="h-100">
+    <h2 class="text-muted">Criar dimensão</h2>
     <Form :isSubmitting="isSubmitting" @submit="onSubmit" />
   </div>
 </template>
