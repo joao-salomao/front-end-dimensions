@@ -57,6 +57,7 @@ export default {
           toast(this, {
             title: "Tente novamente.",
             message: "Algo deu errado",
+            variant: "danger",
           });
         })
         .finally(() => {

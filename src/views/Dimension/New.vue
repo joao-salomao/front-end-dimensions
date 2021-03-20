@@ -33,6 +33,7 @@ export default {
           toast(this, {
             title: "Algo deu errado",
             message: "Tente novamente.",
+            variant: "danger",
           });
         })
         .finally(() => {

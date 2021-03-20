@@ -31,8 +31,8 @@ export default {
         })
         .catch(() => {
           toast(this, {
-            title: "Sucesso!",
-            message: "Questão criada.",
+            title: "Algo deu errado",
+            message: "Tente novamente",
             variant: "danger",
           });
         })
