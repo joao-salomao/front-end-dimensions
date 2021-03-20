@@ -1,6 +1,6 @@
 <template>
   <div class="h-100">
-    <h1>Criar questão</h1>
+    <h2 class="text-muted">Criar questão</h2>
     <Form :isSubmitting="isSubmitting" @submit="createQuestion" />
   </div>
 </template>
