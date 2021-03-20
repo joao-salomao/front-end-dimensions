@@ -14,6 +14,7 @@
 </template>
 <script>
 import Form from "./Form";
+import toast from "@/utils/toast";
 export default {
   components: {
     Form,
@@ -34,21 +35,18 @@ export default {
       this.$http
         .put(`/dimension/${this.$route.params.id}`, data)
         .then(() => {
-          this.$bvToast.toast("Dimensão atualizada.", {
+          toast(this, {
             title: "Sucesso!",
-            variant: "success",
-            solid: true,
+            message: "Dimensão atualizada.",
           });
 
-          setTimeout(() => {
-            this.$router.push("/dimension");
-          }, 1000);
+          this.$router.push("/dimension");
         })
         .catch(() => {
-          this.$bvToast.toast("Tente novamente.", {
+          toast(this, {
             title: "Algo deu errado",
+            message: "Tente novamente.",
             variant: "danger",
-            solid: true,
           });
         })
         .finally(() => {

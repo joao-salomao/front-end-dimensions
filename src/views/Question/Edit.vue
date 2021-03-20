@@ -13,6 +13,7 @@
   </div>
 </template>
 <script>
+import toast from "@/utils/toast";
 import Form from "./Form";
 export default {
   components: {
@@ -45,21 +46,17 @@ export default {
       this.$http
         .put(`/question/${this.$route.params.id}`, data)
         .then(() => {
-          this.$bvToast.toast("Questão atualizada.", {
+          toast(this, {
             title: "Sucesso!",
-            variant: "success",
-            solid: true,
+            message: "Questão atualizada.",
           });
 
-          setTimeout(() => {
-            this.$router.push("/question");
-          }, 1000);
+          this.$router.push("/question");
         })
         .catch(() => {
-          this.$bvToast.toast("Tente novamente.", {
-            title: "Algo deu errado",
-            variant: "danger",
-            solid: true,
+          toast(this, {
+            title: "Tente novamente.",
+            message: "Algo deu errado",
           });
         })
         .finally(() => {

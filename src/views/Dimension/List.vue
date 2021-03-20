@@ -44,6 +44,7 @@
 </template>
 <style scoped src="./list.styles.css"></style>
 <script>
+import toast from "@/utils/toast";
 const MODAL_DEFAULT_CONFIG = {
   size: "sm",
   okTitle: "Sim",
@@ -106,10 +107,9 @@ export default {
             dimension.isDeleting = true;
             await this.deleteDimension(dimension.id);
             dimension.isDeleting = false;
-
             this.removeDimensionFromList(dimension);
-
-            this.showToast({
+            toast(this, {
+              title: "Sucesso !",
               message: `A dimensão "${dimension.title}" foi removida`,
             });
           }
@@ -120,13 +120,6 @@ export default {
     },
     removeDimensionFromList(dimension) {
       this.dimensions = this.dimensions.filter((q) => q !== dimension);
-    },
-    showToast({ title = "Sucesso !", message, variant = "success" }) {
-      this.$bvToast.toast(message, {
-        title,
-        variant,
-        solid: true,
-      });
     },
   },
 };

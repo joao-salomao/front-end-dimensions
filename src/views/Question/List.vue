@@ -75,6 +75,7 @@
 </template>
 <style scoped src="./list.styles.css"></style>
 <script>
+import toast from "@/utils/toast";
 import Dimensions from "@/components/SelectDimensions";
 export default {
   name: "List",
@@ -140,10 +141,10 @@ export default {
       });
     },
     showToast({ title = "Sucesso !", message, variant = "success" }) {
-      this.$bvToast.toast(message, {
+      toast(this, {
         title,
+        message,
         variant,
-        solid: true,
       });
     },
   },

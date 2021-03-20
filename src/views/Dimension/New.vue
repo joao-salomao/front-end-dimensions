@@ -5,6 +5,7 @@
   </div>
 </template>
 <script>
+import toast from "@/utils/toast";
 import Form from "./Form";
 export default {
   components: {
@@ -21,21 +22,17 @@ export default {
       this.$http
         .post("/dimension", data)
         .then(() => {
-          this.$bvToast.toast("Dimensão criada.", {
+          toast(this, {
             title: "Sucesso!",
-            variant: "success",
-            solid: true,
+            message: "Dimensão criada.",
           });
 
-          setTimeout(() => {
-            this.$router.push("/dimension");
-          }, 1000);
+          this.$router.push("/dimension");
         })
         .catch(() => {
-          this.$bvToast.toast("Tente novamente.", {
+          toast(this, {
             title: "Algo deu errado",
-            variant: "danger",
-            solid: true,
+            message: "Tente novamente.",
           });
         })
         .finally(() => {

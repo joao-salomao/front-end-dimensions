@@ -6,6 +6,7 @@
 </template>
 <script>
 import Form from "./Form";
+import toast from "@/utils/toast";
 export default {
   components: {
     Form,
@@ -21,21 +22,18 @@ export default {
       this.$http
         .post("/question", data)
         .then(() => {
-          this.$bvToast.toast("Questão criada.", {
+          toast(this, {
             title: "Sucesso!",
-            variant: "success",
-            solid: true,
+            message: "Questão criada.",
           });
 
-          setTimeout(() => {
-            this.$router.push("/question");
-          }, 1000);
+          this.$router.push("/question");
         })
         .catch(() => {
-          this.$bvToast.toast("Tente novamente.", {
-            title: "Algo deu errado",
+          toast(this, {
+            title: "Sucesso!",
+            message: "Questão criada.",
             variant: "danger",
-            solid: true,
           });
         })
         .finally(() => {
