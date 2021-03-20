@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import QuestionList from '../views/Question/List'
+import QuestionBase from '../views/Question/QuestionBase'
+import NewQuestion from '../views/Question/New'
+import EditQuestion from '../views/Question/Edit'
 import NewDimension from '../views/Dimension/New'
 import EditDimension from '../views/Dimension/Edit'
 import DimensionList from '../views/Dimension/List'
@@ -16,8 +19,26 @@ const routes = [
   },
   {
     path: '/question',
-    name: 'QuestionList',
-    component: QuestionList
+    name: 'QuestionBase',
+    component: QuestionBase,
+    redirect: '/question/list',
+    children: [
+      {
+        path: 'list',
+        name: 'QuestionList',
+        component: QuestionList
+      },
+      {
+        path: 'new',
+        name: 'NewQuestion',
+        component: NewQuestion
+      },
+      {
+        path: 'edit/:id',
+        name: 'EditQuestion',
+        component: EditQuestion
+      },
+    ]
   },
   {
     path: '/dimension',

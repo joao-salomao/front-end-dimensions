@@ -10,7 +10,12 @@
           @click="$router.push('/dimension')"
           >Dimensões</b-button
         >
-        <b-button size="sm" variant="primary">+ Criar pergunta</b-button>
+        <b-button
+          size="sm"
+          variant="primary"
+          @click="$router.push('/question/new')"
+          >+ Criar pergunta</b-button
+        >
       </div>
     </div>
     <div class="body">
@@ -54,7 +59,11 @@
             </div>
             <div class="question__actions">
               <b-button-group size="sm">
-                <b-button variant="primary">Editar</b-button>
+                <b-button
+                  variant="primary"
+                  @click="$router.push(`/question/edit/${question.id}`)"
+                  >Editar</b-button
+                >
                 <b-button
                   variant="danger"
                   :disabled="question.isDeleting"
