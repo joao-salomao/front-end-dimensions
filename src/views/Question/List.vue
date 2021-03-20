@@ -20,20 +20,12 @@
     </div>
     <div class="body">
       <div class="mb-2" style="max-width: 50%">
-        <label> Filtro </label>
-        <multiselect
+        <Dimensions
           multiple
-          label="text"
-          track-by="value"
-          :options="dimensionOptions"
-          v-model="selectedDimensions"
-          selectedLabel="Selecionado"
-          deselectLabel="Clique para remover"
-          selectLabel="Clique para selecionar"
+          label="Filtro"
+          :selected.sync="selectedDimensions"
           placeholder="Selecione um ou mais dimensões para filtrar"
-        >
-          <template slot="noOptions"> Nenhuma dimensão disponível </template>
-        </multiselect>
+        />
       </div>
       <div class="question" :key="i" v-for="(question, i) in questions">
         <div class="question__status">
@@ -83,34 +75,26 @@
 </template>
 <style scoped src="./list.styles.css"></style>
 <script>
-import { uniqBy } from "lodash";
+import Dimensions from "@/components/SelectDimensions";
 export default {
   name: "List",
+  components: {
+    Dimensions,
+  },
   data() {
     return {
       questions: [],
-      dimensions: [],
       selectedDimensions: [],
     };
   },
-  computed: {
-    dimensionOptions() {
-      return this.dimensions.map((item) => {
-        return {
-          value: item.id,
-          text: item.title,
-        };
-      });
-    },
-  },
   watch: {
     selectedDimensions() {
-      const ids = this.selectedDimensions.map((d) => d.value).join(",");
+      const ids = this.selectedDimensions.map((d) => d.id).join(",");
       this.getQuestions(ids);
     },
   },
   mounted() {
-    this.getQuestions().then(this.setDimensions);
+    this.getQuestions();
   },
   methods: {
     getQuestions(dimensions = null) {
@@ -128,10 +112,6 @@ export default {
             };
           });
         });
-    },
-    setDimensions() {
-      const dimensions = this.questions.map((q) => q.dimension);
-      this.dimensions = uniqBy(dimensions, "id");
     },
     updateQuestionActiveStatus(question, active) {
       this.$http
