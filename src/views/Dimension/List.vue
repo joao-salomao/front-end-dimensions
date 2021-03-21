@@ -19,26 +19,36 @@
       </div>
     </div>
     <div class="body">
-      <div class="dimension" :key="i" v-for="(dimension, i) in dimensions">
-        <div>
-          {{ dimension.title }}
+      <div v-if="!isLoading">
+        <div class="dimension" :key="i" v-for="(dimension, i) in dimensions">
+          <div>
+            {{ dimension.title }}
+          </div>
+          <b-button-group size="sm">
+            <b-button
+              variant="primary"
+              @click="$router.push('/dimension/edit/' + dimension.id)"
+              >Editar</b-button
+            >
+            <b-button
+              variant="danger"
+              :disabled="dimension.isDeleting"
+              style="min-width: 57px; min-height: 31px"
+              @click="onClickDeleteDimension(dimension)"
+            >
+              <b-spinner small type="grow" v-if="dimension.isDeleting" />
+              <span class="p-0" v-else> Excluir </span>
+            </b-button>
+          </b-button-group>
         </div>
-        <b-button-group size="sm">
-          <b-button
-            variant="primary"
-            @click="$router.push('/dimension/edit/' + dimension.id)"
-            >Editar</b-button
-          >
-          <b-button
-            variant="danger"
-            :disabled="dimension.isDeleting"
-            style="min-width: 57px; min-height: 31px"
-            @click="onClickDeleteDimension(dimension)"
-          >
-            <b-spinner small type="grow" v-if="dimension.isDeleting" />
-            <span class="p-0" v-else> Excluir </span>
-          </b-button>
-        </b-button-group>
+        <b-alert v-if="!dimensions.length" show>
+          <div class="text-center">
+            Nenhuma dimensão encontrada. Tente cadastrar uma.
+          </div>
+        </b-alert>
+      </div>
+      <div class="text-center mt-2" v-else>
+        <b-spinner type="grow" />
       </div>
     </div>
   </div>
@@ -61,6 +71,7 @@ export default {
   data() {
     return {
       dimensions: [],
+      isLoading: false,
     };
   },
   mounted() {
@@ -68,14 +79,20 @@ export default {
   },
   methods: {
     getDimensions() {
-      this.$http.get("/dimension").then((resp) => {
-        this.dimensions = resp.data.map((q) => {
-          return {
-            ...q,
-            isDeleting: false,
-          };
+      this.isLoading = true;
+      this.$http
+        .get("/dimension")
+        .then((resp) => {
+          this.dimensions = resp.data.map((q) => {
+            return {
+              ...q,
+              isDeleting: false,
+            };
+          });
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
-      });
     },
     onClickDeleteDimension(dimension) {
       if (dimension.questions.length) {
@@ -95,6 +112,7 @@ export default {
       this.$bvModal.msgBoxOk(text + questions, {
         ...MODAL_DEFAULT_CONFIG,
         size: "md",
+        okTitle: "Ok",
       });
     },
     showDeleteWizard(dimension) {
