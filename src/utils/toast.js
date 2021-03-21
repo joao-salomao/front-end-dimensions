@@ -3,6 +3,6 @@ export default function toast(context, { title, message, variant = "success", so
         title,
         variant,
         solid,
-        autoHideDelay: 4000
+        autoHideDelay: 3000
     });
 }
