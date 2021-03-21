@@ -27,48 +27,59 @@
           placeholder="Selecione um ou mais dimensões para filtrar"
         />
       </div>
-      <div class="question" :key="i" v-for="(question, i) in questions">
-        <div class="question__status">
-          <b-icon
-            v-if="question.active"
-            icon="check-circle-fill"
-            variant="success"
-            @click="updateQuestionActiveStatus(question, false)"
-          />
-          <b-icon
-            v-else
-            icon="circle"
-            @click="updateQuestionActiveStatus(question, true)"
-          />
-        </div>
-        <div class="question__body">
-          <div class="question__title">
-            {{ question.dimension.title }}
+      <div v-if="!isLoading">
+        <div class="question" :key="i" v-for="(question, i) in questions">
+          <div class="question__status">
+            <b-icon
+              v-if="question.active"
+              icon="check-circle-fill"
+              variant="success"
+              @click="updateQuestionActiveStatus(question, false)"
+            />
+            <b-icon
+              v-else
+              icon="circle"
+              @click="updateQuestionActiveStatus(question, true)"
+            />
           </div>
-          <div class="d-flex w-100 justify-content-between">
-            <div class="question__content">
-              {{ question.content }}
+          <div class="question__body">
+            <div class="question__title">
+              {{ question.dimension.title }}
             </div>
-            <div class="question__actions">
-              <b-button-group size="sm">
-                <b-button
-                  variant="primary"
-                  @click="$router.push(`/question/edit/${question.id}`)"
-                  >Editar</b-button
-                >
-                <b-button
-                  variant="danger"
-                  :disabled="question.isDeleting"
-                  style="min-width: 57px; min-height: 31px"
-                  @click="onClickDeleteQuestion(question)"
-                >
-                  <b-spinner small type="grow" v-if="question.isDeleting" />
-                  <span class="p-0" v-else> Excluir </span>
-                </b-button>
-              </b-button-group>
+            <div class="d-flex w-100 justify-content-between">
+              <div class="question__content">
+                {{ question.content }}
+              </div>
+              <div class="question__actions">
+                <b-button-group size="sm">
+                  <b-button
+                    variant="primary"
+                    @click="$router.push(`/question/edit/${question.id}`)"
+                    >Editar</b-button
+                  >
+                  <b-button
+                    variant="danger"
+                    :disabled="question.isDeleting"
+                    style="min-width: 57px; min-height: 31px"
+                    @click="onClickDeleteQuestion(question)"
+                  >
+                    <b-spinner small type="grow" v-if="question.isDeleting" />
+                    <span class="p-0" v-else> Excluir </span>
+                  </b-button>
+                </b-button-group>
+              </div>
             </div>
           </div>
         </div>
+        <b-alert v-if="!questions.length" show>
+          <div class="text-center">
+            Nenhuma questão encontrada. Tente alterar o filtro ou
+            cadastrar uma questão
+          </div>
+        </b-alert>
+      </div>
+      <div class="text-center mt-2" v-else>
+        <b-spinner type="grow" />
       </div>
     </div>
   </div>
@@ -84,6 +95,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       questions: [],
       selectedDimensions: [],
     };
@@ -99,6 +111,7 @@ export default {
   },
   methods: {
     getQuestions(dimensions = null) {
+      this.isLoading = true;
       return this.$http
         .get("/question", {
           params: {
@@ -112,6 +125,9 @@ export default {
               isDeleting: false,
             };
           });
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     updateQuestionActiveStatus(question, active) {
